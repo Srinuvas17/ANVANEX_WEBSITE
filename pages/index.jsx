@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import Logo from "/Background (1).jpg";
 
 export default function HomePage() {
   return (
@@ -11,7 +10,7 @@ export default function HomePage() {
       <section className="text-center py-24 px-6 bg-gradient-to-br from-blue-900 to-black">
         <div className="mb-8">
           <Image
-            src={Logo}
+            src="/logo.jpg"
             alt="Anvanex Logo"
             width={200}
             height={200}
