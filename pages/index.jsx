@@ -1,290 +1,697 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { 
+  FaShieldAlt, 
+  FaPalette, 
+  FaRobot, 
+  FaBitcoin,
+  FaLinkedin,
+  FaGithub,
+  FaTwitter,
+  FaArrowRight,
+  FaQuoteLeft
+} from "react-icons/fa";
 
 export default function HomePage() {
-  const [isVisible, setIsVisible] = useState({});
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { scrollYProgress } = useScroll();
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(prev => ({
-              ...prev,
-              [entry.target.id]: true
-            }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const sections = document.querySelectorAll('section[id]');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   const services = [
     {
-      title: "Cybersecurity",
-      icon: "🛡️",
-      gradient: "from-blue-600 to-purple-600",
-      points: [
+      title: "Cybersecurity Services",
+      icon: <FaShieldAlt className="text-4xl" />,
+      gradient: "from-blue-600 via-blue-500 to-cyan-400",
+      features: [
         "Zero Trust Architecture",
         "Threat Detection & Response", 
-        "Endpoint Protection",
-        "Cloud Security"
+        "Cloud & Endpoint Protection"
       ],
+      link: "/services/cybersecurity"
     },
     {
       title: "Web Designing",
-      icon: "🎨",
-      gradient: "from-purple-600 to-pink-600",
-      points: [
-        "UI/UX Design",
-        "Responsive Frontends",
-        "WordPress & CMS",
-        "SEO Optimization"
+      icon: <FaPalette className="text-4xl" />,
+      gradient: "from-purple-600 via-pink-500 to-rose-400",
+      features: [
+        "UI/UX Strategy",
+        "SEO-optimized & Mobile Responsive",
+        "CMS (WordPress, custom)"
       ],
+      link: "/services/web-design"
     },
     {
       title: "AI & DevOps",
-      icon: "🤖",
-      gradient: "from-green-500 to-teal-500",
-      points: [
-        "AI Tools Integration",
+      icon: <FaRobot className="text-4xl" />,
+      gradient: "from-green-600 via-emerald-500 to-teal-400",
+      features: [
+        "AI Integration",
         "Infrastructure Automation",
-        "Data Pipelines",
-        "Scalable Applications"
+        "Scalable Data Pipelines"
       ],
+      link: "/services/ai-devops"
     },
     {
       title: "Digital Asset Services",
-      icon: "💎",
-      gradient: "from-yellow-500 to-orange-500",
-      points: [
+      icon: <FaBitcoin className="text-4xl" />,
+      gradient: "from-yellow-600 via-orange-500 to-red-400",
+      features: [
         "Blockchain Integration",
-        "Secure Wallet Management",
+        "Secure Wallets",
         "Asset Tokenization",
         "Crypto Payment Gateways"
       ],
+      link: "/services/digital-assets"
+    }
+  ];
+
+  const testimonials = [
+    {
+      quote: "Anvanex transformed our cybersecurity infrastructure with their Zero Trust implementation. Outstanding results.",
+      author: "Sarah Chen",
+      position: "CTO, TechCorp Solutions"
+    },
+    {
+      quote: "Their AI integration services helped us automate 80% of our deployment pipeline. Incredible expertise.",
+      author: "Michael Rodriguez",
+      position: "DevOps Lead, InnovateLabs"
+    },
+    {
+      quote: "The blockchain wallet solution they built is secure, scalable, and user-friendly. Highly recommended.",
+      author: "David Kim",
+      position: "Founder, CryptoVentures"
     }
   ];
 
   return (
-    <div className="bg-gradient-to-br from-black via-gray-900 to-slate-900 text-white min-h-screen font-inter overflow-x-hidden">
-      {/* Matrix Background Effect */}
-      <div className="fixed inset-0 matrix-bg pointer-events-none z-0"></div>
-      
-      {/* Hero Section */}
-      <section id="hero" className="relative h-screen flex flex-col justify-center items-center text-center px-6 overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-500/5 to-green-500/5 rounded-full blur-3xl"></div>
-        </div>
+    <div className="bg-black text-white min-h-screen font-poppins overflow-x-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-slate-900"></div>
+        
+        {/* Floating Orbs */}
+        <motion.div 
+          className="absolute top-20 left-20 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-40 right-20 w-96 h-96 bg-green-500/15 rounded-full blur-3xl"
+          animate={{
+            x: [0, -80, 0],
+            y: [0, 60, 0],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
 
-        {/* Logo */}
-        <div className="relative z-10 mb-8">
-          <div className="relative">
-            <Image
-              src="/logo.jpg"
-              alt="Anvanex Technologies Logo"
-              width={180}
-              height={180}
-              className="animate-float animate-glow rounded-full border-4 border-blue-500/30 shadow-2xl"
+        {/* Particle Grid */}
+        <div className="absolute inset-0 opacity-30">
+          {[...Array(50)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-cyan-400 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                opacity: [0, 1, 0],
+                scale: [0, 1, 0],
+              }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+              }}
             />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-green-500/20 animate-pulse-glow"></div>
-          </div>
+          ))}
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-6xl md:text-8xl font-black leading-tight mb-6">
-            <span className="text-gradient">Innovation</span>
+        {/* Mouse Follower */}
+        <motion.div
+          className="absolute w-6 h-6 bg-cyan-400/30 rounded-full blur-sm pointer-events-none"
+          animate={{
+            x: mousePosition.x - 12,
+            y: mousePosition.y - 12,
+          }}
+          transition={{
+            type: "spring",
+            damping: 30,
+            stiffness: 200,
+          }}
+        />
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="max-w-6xl mx-auto"
+        >
+          {/* Logo */}
+          <motion.div 
+            className="mb-12"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 1.2, type: "spring" }}
+          >
+            <div className="relative inline-block">
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-green-500/30 rounded-full blur-xl"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.6, 0.3],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              <Image
+                src="/logo.jpg"
+                alt="Anvanex Technologies Logo"
+                width={200}
+                height={200}
+                className="relative z-10 rounded-full border-4 border-cyan-400/50 shadow-2xl"
+              />
+              <motion.div
+                className="absolute inset-0 rounded-full border-2 border-cyan-400/30"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              />
+            </div>
+          </motion.div>
+
+          {/* Hero Text */}
+          <motion.h1 
+            className="text-6xl md:text-8xl lg:text-9xl font-black leading-tight mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+          >
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Innovation
+            </span>
             <br />
             <span className="text-white">Meets</span>
             <br />
-            <span className="text-gradient">Encryption</span>
-          </h1>
+            <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-teal-600 bg-clip-text text-transparent">
+              Encryption
+            </span>
+          </motion.h1>
           
-          <p className="text-2xl md:text-3xl text-gray-300 mb-4 font-light">
+          <motion.p 
+            className="text-2xl md:text-3xl text-gray-300 mb-6 font-light"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+          >
             Anvanex Technologies Private Limited
-          </p>
+          </motion.p>
           
-          <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Pioneering the future of cybersecurity, web innovation, AI automation, and digital asset management
-          </p>
+          <motion.p 
+            className="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.9 }}
+          >
+            Pioneering the future of cybersecurity, web innovation, AI automation, and digital asset management with cutting-edge technology solutions
+          </motion.p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.2 }}
+          >
             <Link href="#services">
-              <button className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 cyber-border">
-                <span className="relative z-10">Explore Services</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
+              <motion.button 
+                className="group relative px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl text-white text-lg font-semibold overflow-hidden"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600"
+                  initial={{ x: "100%" }}
+                  whileHover={{ x: "0%" }}
+                  transition={{ duration: 0.3 }}
+                />
+                <span className="relative z-10 flex items-center gap-2">
+                  Explore Services <FaArrowRight />
+                </span>
+              </motion.button>
             </Link>
             
             <Link href="#contact">
-              <button className="group relative px-8 py-4 border-2 border-green-500 rounded-2xl text-green-400 text-lg font-semibold transition-all duration-300 hover:bg-green-500 hover:text-black hover:scale-105 hover:shadow-2xl hover:shadow-green-500/25">
-                <span className="relative z-10">Contact Us</span>
-              </button>
+              <motion.button 
+                className="group relative px-10 py-4 border-2 border-green-500 rounded-2xl text-green-400 text-lg font-semibold overflow-hidden"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-green-500"
+                  initial={{ scale: 0 }}
+                  whileHover={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <span className="relative z-10 group-hover:text-black transition-colors duration-300">
+                  Contact Us
+                </span>
+              </motion.button>
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <motion.div 
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
           <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-pulse"></div>
+            <motion.div 
+              className="w-1 h-3 bg-cyan-400 rounded-full mt-2"
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Services Section */}
-      <section id="services" className={`relative py-24 px-6 transition-all duration-1000 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+      <section id="services" className="relative py-24 px-6 z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black mb-6">
-              <span className="text-gradient">Our Services</span>
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-5xl md:text-7xl font-black mb-6">
+              <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+                Our Services
+              </span>
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
               Comprehensive technology solutions designed to secure, innovate, and transform your digital presence
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8">
             {services.map((service, index) => (
-              <div
+              <motion.div
                 key={service.title}
-                className={`service-card glassmorphism rounded-3xl p-8 cyber-border group transition-all duration-500 delay-${index * 100}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="group relative"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
               >
-                <div className="text-center mb-6">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${service.gradient} text-2xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    {service.icon}
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">
-                    {service.title}
-                  </h3>
-                </div>
-                
-                <ul className="space-y-3">
-                  {service.points.map((point, pointIndex) => (
-                    <li key={point} className="flex items-start text-gray-300 group-hover:text-white transition-colors duration-300">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mt-2 mr-3 flex-shrink-0 group-hover:bg-green-300 transition-colors duration-300"></div>
-                      <span className="text-sm leading-relaxed">{point}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="relative h-full bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50 overflow-hidden">
+                  {/* Animated Background */}
+                  <motion.div
+                    className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                  />
+                  
+                  {/* Glowing Border Effect */}
+                  <motion.div
+                    className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${service.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`}
+                  />
 
-                <div className="mt-6 pt-6 border-t border-gray-700 group-hover:border-gray-600 transition-colors duration-300">
-                  <button className="w-full py-2 text-sm font-semibold text-gray-400 group-hover:text-green-400 transition-colors duration-300">
-                    Learn More →
-                  </button>
+                  <div className="relative z-10">
+                    {/* Icon */}
+                    <motion.div 
+                      className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${service.gradient} text-white mb-6`}
+                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {service.icon}
+                    </motion.div>
+
+                    {/* Title */}
+                    <h3 className="text-2xl font-bold text-white mb-6 group-hover:text-cyan-300 transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    
+                    {/* Features */}
+                    <ul className="space-y-4 mb-8">
+                      {service.features.map((feature, featureIndex) => (
+                        <motion.li 
+                          key={feature} 
+                          className="flex items-start text-gray-300 group-hover:text-white transition-colors duration-300"
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.4, delay: featureIndex * 0.1 }}
+                          viewport={{ once: true }}
+                        >
+                          <motion.div 
+                            className="w-2 h-2 bg-cyan-400 rounded-full mt-2 mr-4 flex-shrink-0"
+                            whileHover={{ scale: 1.5 }}
+                          />
+                          <span className="text-sm leading-relaxed">{feature}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+
+                    {/* Learn More Button */}
+                    <Link href={service.link}>
+                      <motion.button 
+                        className="w-full py-3 text-sm font-semibold text-gray-400 group-hover:text-cyan-400 transition-colors duration-300 border border-gray-600 rounded-xl group-hover:border-cyan-400/50"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Learn More →
+                      </motion.button>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section className="relative py-24 px-6 z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-5xl md:text-6xl font-black mb-8">
+                <span className="bg-gradient-to-r from-green-400 to-blue-600 bg-clip-text text-transparent">
+                  About Anvanex
+                </span>
+              </h2>
+              <p className="text-xl text-gray-300 mb-6 leading-relaxed">
+                We are pioneers in the convergence of cybersecurity, artificial intelligence, and blockchain technology. Our mission is to empower businesses with cutting-edge solutions that protect, innovate, and scale.
+              </p>
+              <p className="text-lg text-gray-400 mb-8 leading-relaxed">
+                From Zero Trust security architectures to AI-powered automation and blockchain integration, we deliver comprehensive technology solutions that drive digital transformation and secure your future.
+              </p>
+              <motion.div 
+                className="flex flex-wrap gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                {["Innovation", "Security", "Scalability", "Excellence"].map((value, index) => (
+                  <motion.span 
+                    key={value}
+                    className="px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 rounded-full text-cyan-300 text-sm font-semibold"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    {value}
+                  </motion.span>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <div className="relative bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50">
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 rounded-3xl"
+                  animate={{
+                    opacity: [0.1, 0.3, 0.1],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                <div className="relative z-10 text-center">
+                  <h3 className="text-3xl font-bold text-white mb-6">Our Vision</h3>
+                  <p className="text-gray-300 leading-relaxed mb-6">
+                    To be the global leader in secure, intelligent, and decentralized technology solutions that shape the future of digital business.
+                  </p>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-cyan-400 mb-2">500+</div>
+                      <div className="text-sm text-gray-400">Projects Delivered</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-400 mb-2">99.9%</div>
+                      <div className="text-sm text-gray-400">Uptime Guarantee</div>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="relative py-24 px-6 z-10">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            className="text-center mb-20"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-5xl md:text-6xl font-black mb-6">
+              <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+                Client Success Stories
+              </span>
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                className="relative bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -5 }}
+              >
+                <FaQuoteLeft className="text-cyan-400 text-2xl mb-6" />
+                <p className="text-gray-300 mb-6 leading-relaxed">
+                  "{testimonial.quote}"
+                </p>
+                <div className="border-t border-gray-700 pt-6">
+                  <div className="font-semibold text-white">{testimonial.author}</div>
+                  <div className="text-sm text-gray-400">{testimonial.position}</div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className={`relative py-24 px-6 bg-gradient-to-r from-gray-900 via-black to-gray-900 transition-all duration-1000 ${isVisible.contact ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl md:text-6xl font-black mb-8">
-            <span className="text-gradient">Get In Touch</span>
-          </h2>
-          
-          <p className="text-xl text-gray-400 mb-12 leading-relaxed">
-            Ready to transform your digital infrastructure? Let's discuss your next project.
-          </p>
+      <section id="contact" className="relative py-24 px-6 bg-gradient-to-r from-gray-900/50 via-black/50 to-gray-900/50 z-10">
+        <div className="max-w-6xl mx-auto">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-5xl md:text-6xl font-black mb-8">
+              <span className="bg-gradient-to-r from-cyan-400 to-green-500 bg-clip-text text-transparent">
+                Get In Touch
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 leading-relaxed">
+              Ready to transform your digital infrastructure? Let's discuss your next project.
+            </p>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="glassmorphism rounded-3xl p-8 cyber-border group hover:scale-105 transition-all duration-300">
-              <div className="text-4xl mb-4">📧</div>
-              <h3 className="text-xl font-bold mb-2 text-white">Email Us</h3>
+            <motion.div
+              className="relative bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50 group"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="text-5xl mb-6">📧</div>
+              <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-cyan-300 transition-colors duration-300">
+                Email Us
+              </h3>
               <a 
                 href="mailto:support@anvanex.in" 
-                className="text-blue-400 hover:text-blue-300 transition-colors duration-300 text-lg font-semibold"
+                className="text-cyan-400 hover:text-cyan-300 transition-colors duration-300 text-lg font-semibold"
               >
                 support@anvanex.in
               </a>
-            </div>
+            </motion.div>
             
-            <div className="glassmorphism rounded-3xl p-8 cyber-border group hover:scale-105 transition-all duration-300">
-              <div className="text-4xl mb-4">📱</div>
-              <h3 className="text-xl font-bold mb-2 text-white">Call Us</h3>
+            <motion.div
+              className="relative bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50 group"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="text-5xl mb-6">📱</div>
+              <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-green-300 transition-colors duration-300">
+                Call Us
+              </h3>
               <a 
                 href="tel:+919542495286" 
                 className="text-green-400 hover:text-green-300 transition-colors duration-300 text-lg font-semibold"
               >
                 +91 95424 95286
               </a>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="glassmorphism rounded-3xl p-8 cyber-border">
+          <motion.div
+            className="relative bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50 text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
             <h3 className="text-2xl font-bold mb-4 text-white">Business Hours</h3>
-            <p className="text-gray-300 text-lg">
+            <p className="text-gray-300 text-lg leading-relaxed">
               Monday - Friday: 9:00 AM - 6:00 PM IST<br />
               Saturday: 10:00 AM - 4:00 PM IST
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative py-12 px-6 border-t border-gray-800 bg-black/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <div className="flex items-center mb-4">
+      <footer className="relative py-16 px-6 border-t border-gray-800 bg-black/80 z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 mb-12">
+            <div className="md:col-span-2">
+              <div className="flex items-center mb-6">
                 <Image
                   src="/logo.jpg"
                   alt="Anvanex Logo"
-                  width={40}
-                  height={40}
-                  className="rounded-full mr-3"
+                  width={50}
+                  height={50}
+                  className="rounded-full mr-4"
                 />
-                <span className="text-xl font-bold text-white">Anvanex Technologies</span>
+                <span className="text-2xl font-bold text-white">Anvanex Technologies</span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Pioneering innovation in cybersecurity, web development, AI automation, and digital asset management.
+              <p className="text-gray-400 leading-relaxed mb-6">
+                Pioneering innovation in cybersecurity, web development, AI automation, and digital asset management with cutting-edge technology solutions.
               </p>
+              <div className="flex space-x-4">
+                <motion.a 
+                  href="#" 
+                  className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-600 transition-all duration-300"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <FaLinkedin />
+                </motion.a>
+                <motion.a 
+                  href="#" 
+                  className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-600 transition-all duration-300"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <FaGithub />
+                </motion.a>
+                <motion.a 
+                  href="#" 
+                  className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-400 transition-all duration-300"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <FaTwitter />
+                </motion.a>
+              </div>
             </div>
             
             <div>
-              <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#services" className="text-gray-400 hover:text-white transition-colors duration-300">Services</a></li>
-                <li><a href="#contact" className="text-gray-400 hover:text-white transition-colors duration-300">Contact</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">Privacy Policy</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">Terms of Service</a></li>
+              <h4 className="text-lg font-semibold text-white mb-6">Quick Links</h4>
+              <ul className="space-y-3">
+                {["Services", "About", "Contact", "Privacy Policy", "Terms of Service"].map((link) => (
+                  <li key={link}>
+                    <a 
+                      href={`#${link.toLowerCase().replace(/\s+/g, '-')}`} 
+                      className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
             
             <div>
-              <h4 className="text-lg font-semibold text-white mb-4">Connect</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-600 transition-all duration-300">
-                  <span className="text-sm">Li</span>
-                </a>
-                <a href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-400 transition-all duration-300">
-                  <span className="text-sm">Tw</span>
-                </a>
-                <a href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-600 transition-all duration-300">
-                  <span className="text-sm">Gh</span>
-                </a>
-              </div>
+              <h4 className="text-lg font-semibold text-white mb-6">Services</h4>
+              <ul className="space-y-3">
+                {services.map((service) => (
+                  <li key={service.title}>
+                    <Link 
+                      href={service.link}
+                      className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
+                    >
+                      {service.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
           
           <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500">
               © 2025 Anvanex Technologies Pvt. Ltd. All rights reserved.
             </p>
           </div>
