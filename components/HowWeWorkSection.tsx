@@ -1,15 +1,40 @@
 import React from 'react';
-import { HOW_WE_WORK_STEPS } from '../constants';
-import ProcessCard from './ProcessCard';
+import Image from 'next/image';
+
+const howWeWorkData = [
+  {
+    id: 1,
+    title: 'Discovery',
+    description: 'We deep-dive into your goals, challenges, and tech vision.',
+    image: '/images/discovery.png', // replace with correct path
+  },
+  {
+    id: 2,
+    title: 'Strategy',
+    description: 'We create a secure, scalable blueprint aligned with your mission.',
+    image: '/images/strategy.png',
+  },
+  {
+    id: 3,
+    title: 'Execution',
+    description: 'Our experts build using the latest in AI, DevOps, and cybersecurity tech.',
+    image: '/images/execution.png',
+  },
+  {
+    id: 4,
+    title: 'Delivery',
+    description: 'Timely, transparent deployment with full QA & ongoing support.',
+    image: '/images/delivary.png',
+  },
+];
 
 const HowWeWorkSection: React.FC = () => {
   return (
     <section id="how-we-work" className="py-16 md:py-24 bg-gray-900">
       <div className="container mx-auto px-4">
+        {/* Header */}
         <div className="text-center mb-12" data-aos="fade-down">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            How We Work at Anvanex
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">How We Work at Anvanex</h2>
           <p className="text-lg text-gray-300 italic mb-4">
             — Building Secure, Scalable, Stunning Digital Solutions —
           </p>
@@ -20,51 +45,24 @@ const HowWeWorkSection: React.FC = () => {
           </p>
         </div>
 
-        {/* ✅ Image Grid: 4-Step Process */}
-        <div className="text-center mb-12" data-aos="fade-up">
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Our 4-Step Value Process</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {/* Discovery */}
-          <div className="text-center" data-aos="fade-up" data-aos-delay="100">
-            <img src="/discovery.png" alt="Discovery" className="w-full h-auto mx-auto mb-4 rounded-lg shadow-md" />
-            <h4 className="text-xl font-semibold text-green-400 mb-2">Discovery</h4>
-            <p className="text-gray-300 text-sm">We deep-dive into your goals, challenges, and tech vision.</p>
-          </div>
-
-          {/* Strategy */}
-          <div className="text-center" data-aos="fade-up" data-aos-delay="200">
-            <img src="/strategy.png" alt="Strategy" className="w-full h-auto mx-auto mb-4 rounded-lg shadow-md" />
-            <h4 className="text-xl font-semibold text-green-400 mb-2">Strategy</h4>
-            <p className="text-gray-300 text-sm">We create a secure, scalable blueprint aligned with your mission.</p>
-          </div>
-
-          {/* Execution */}
-          <div className="text-center" data-aos="fade-up" data-aos-delay="300">
-            <img src="/execution.png" alt="Execution" className="w-full h-auto mx-auto mb-4 rounded-lg shadow-md" />
-            <h4 className="text-xl font-semibold text-green-400 mb-2">Execution</h4>
-            <p className="text-gray-300 text-sm">Our experts build using the latest in AI, DevOps, and cybersecurity tech.</p>
-          </div>
-
-          {/* Delivery */}
-          <div className="text-center" data-aos="fade-up" data-aos-delay="400">
-            <img src="/delivary.png" alt="Delivery" className="w-full h-auto mx-auto mb-4 rounded-lg shadow-md" />
-            <h4 className="text-xl font-semibold text-green-400 mb-2">Delivery</h4>
-            <p className="text-gray-300 text-sm">Timely, transparent deployment with full QA & ongoing support.</p>
-          </div>
-        </div>
-
-        {/* ✅ Subheading "What Sets Us Apart" */}
-        <div className="text-center mb-12" data-aos="fade-down">
-          <h3 className="text-2xl font-bold text-green-400 mt-4">What Sets Us Apart</h3>
-          <div className="w-24 h-1 bg-green-500 mx-auto mt-4"></div>
-        </div>
-
-        {/* Existing feature cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {HOW_WE_WORK_STEPS.map((step, index) => (
-            <div key={step.id} data-aos="fade-up" data-aos-delay={`${index * 100}`} className="h-full">
-              <ProcessCard step={step} />
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" data-aos="fade-up">
+          {howWeWorkData.map((item, index) => (
+            <div
+              key={item.id}
+              className="bg-slate-900 border border-slate-700 rounded-xl shadow-xl p-6 text-center transition-all duration-300 transform hover:scale-105 hover:shadow-green-500/40 hover:border-green-500"
+            >
+              <div className="relative w-full h-40 mb-4">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  layout="fill"
+                  objectFit="contain"
+                  className="rounded-md"
+                />
+              </div>
+              <h3 className="text-xl font-semibold text-green-400 mb-2">{item.title}</h3>
+              <p className="text-gray-300 text-sm">{item.description}</p>
             </div>
           ))}
         </div>
