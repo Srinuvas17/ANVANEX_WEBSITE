@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 
 const NavigationBar = () => {
@@ -22,7 +21,7 @@ const NavigationBar = () => {
       {/* Navigation Bar */}
       <nav className="bg-gradient-to-r from-cyan-700 to-green-500 shadow-md px-4">
         <div className="flex justify-between items-center py-4 max-w-screen-xl mx-auto">
-          {/* Left-aligned menu for desktop */}
+          {/* Desktop Menu */}
           <ul className="hidden md:flex space-x-6 text-white font-semibold text-lg tracking-wide pl-2">
             <li><a href="#home" className="hover:underline">Home</a></li>
             <li><a href="#about" className="hover:underline">About Us</a></li>
@@ -31,32 +30,32 @@ const NavigationBar = () => {
             <li><a href="#contact" className="hover:underline">Contact Us</a></li>
           </ul>
 
-          {/* Get a Quote button for desktop */}
+          {/* Desktop "Get a Quote" Button */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="hidden md:inline-block bg-pink-500 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-pink-400 transition-all"
+            className="hidden md:inline-block bg-[#065f46] text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-[#047857] transition-all"
           >
             Get a Quote
           </button>
 
-          {/* Mobile: Hamburger + Get Quote */}
-          <div className="md:hidden flex items-center space-x-4">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded-full shadow hover:bg-yellow-300 transition-all"
-            >
-              Get Quote
-            </button>
+          {/* Mobile: Hamburger + "Menu" */}
+          <div className="md:hidden flex items-center space-x-2">
             <button
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
               className="text-white text-2xl"
             >
               ☰
             </button>
+            <span
+              onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-white font-semibold text-lg cursor-pointer"
+            >
+              Menu
+            </span>
           </div>
         </div>
 
-        {/* Mobile dropdown menu */}
+        {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
           <ul className="md:hidden flex flex-col space-y-2 text-white font-semibold text-lg px-4 pb-4">
             <li><a href="#home">Home</a></li>
@@ -64,6 +63,17 @@ const NavigationBar = () => {
             <li><a href="#services">Our Services</a></li>
             <li><a href="#portfolio">Portfolio</a></li>
             <li><a href="#contact">Contact Us</a></li>
+            <li>
+              <button
+                onClick={() => {
+                  setIsModalOpen(true);
+                  setMobileMenuOpen(false);
+                }}
+                className="mt-2 bg-[#065f46] text-white py-2 px-4 rounded-full shadow hover:bg-[#047857] transition-all"
+              >
+                Get a Quote
+              </button>
+            </li>
           </ul>
         )}
       </nav>
@@ -71,8 +81,13 @@ const NavigationBar = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <button onClick={() => setIsModalOpen(false)} className="absolute top-5 right-5 text-white text-2xl font-bold">&times;</button>
-          <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-xl">
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="absolute top-5 right-5 text-white text-2xl font-bold"
+          >
+            &times;
+          </button>
+          <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-xl relative">
             <h2 className="text-2xl font-bold mb-4">Get a Quote</h2>
             <form className="space-y-4">
               <input type="text" placeholder="Name" className="w-full border p-2 rounded" />
