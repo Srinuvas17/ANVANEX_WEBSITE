@@ -38,6 +38,8 @@ const NavigationBar = () => {
           >
             Get a Quote
           </button>
+  <span className="text-white font-semibold">Menu</span>
+</div>
 
           {/* Mobile: Hamburger + Get Quote */}
           <div className="md:hidden flex items-center space-x-4">
